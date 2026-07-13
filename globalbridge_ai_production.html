@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#E85D2B">
+<meta name="description" content="GlobalBridge AI - AI-powered personalized learning for every student">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR2xvYmFsQnJpZGdlIEFJIiwic2hvcnRfbmFtZSI6Ikdsb2JhbEJyaWRnZSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjRkRGNkU5IiwidGhlbWVfY29sb3IiOiIjRTg1RDJCIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwSUQwaU1qY3dJaUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBeE1EQWdNVEF3SWlCemRIbHNaVDBpWlhKeWIzSWdkMmxrZEdnZ2JHbG1hV1Z5TENCaGNIQXViR2x1YXlCemRXMGlMejQ9Iiwic2l6ZXMiOiIxOTJ4MTkyIn1dfQ==">
+<title>GlobalBridge AI — Personalized Learning</title>
+<style>
+  :root {
+    --primary: #E85D2B; --primary-light: #F4A261; --primary-dark: #C44A1F;
+    --green: #1B6B4F; --green-light: #2A9D8F; --teal: #264653;
+    --gold: #E9C46A; --cream: #FDF6E9; --warm-gray: #F5F0E8;
+    --text: #1a1a1a; --text-secondary: #666; --text-tertiary: #999;
+    --border: #E8E0D4; --error: #dc3545; --success: #28a745;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px; --radius-xl: 20px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06); --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: var(--font); background: var(--cream); color: var(--text); }
+  #app { max-width: 480px; margin: 0 auto; height: 100vh; position: relative; overflow: hidden; background: var(--cream); }
+  .content { height: calc(100vh - 70px); overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .content::-webkit-scrollbar { display: none; }
+  .screen { display: none; width: 100%; min-height: 100%; padding-bottom: 20px; }
+  .screen.active { display: block; animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .btn { border: none; padding: 14px 28px; border-radius: var(--radius-md); font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-primary { background: var(--primary); color: white; width: 100%; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-secondary { background: white; color: var(--primary); border: 2px solid var(--primary); width: 100%; }
+  .btn-green { background: var(--green); color: white; width: 100%; }
+  .btn-outline { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-sm { padding: 10px 20px; font-size: 14px; }
+  .card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin: 0 16px 12px; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: var(--shadow); }
+  .progress-track { height: 8px; background: #E8E0D4; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.gold { background: var(--gold); }
+  .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .tag-primary { background: rgba(232,93,43,0.12); color: var(--primary); }
+  .tag-green { background: rgba(27,107,79,0.12); color: var(--green); }
+  .tag-teal { background: rgba(38,70,83,0.12); color: var(--teal); }
+  .tag-gold { background: rgba(233,196,106,0.2); color: #B8860B; }
+  .tag-purple { background: rgba(138,43,226,0.12); color: #8A2BE2; }
+  .tag-red { background: rgba(220,53,69,0.12); color: #dc3545; }
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: 4px; z-index: 100; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 6px 14px; border-radius: 10px; transition: all 0.2s; border: none; background: none; font-family: inherit; }
+  .nav-item.active .nav-icon { color: var(--primary); }
+  .nav-item.active .nav-label { color: var(--primary); font-weight: 600; }
+  .nav-icon { font-size: 22px; color: var(--text-tertiary); transition: color 0.2s; line-height: 1; }
+  .nav-label { font-size: 11px; color: var(--text-tertiary); transition: color 0.2s; }
+  .nav-center { width: 56px; height: 56px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin-top: -20px; box-shadow: 0 4px 16px rgba(232,93,43,0.35); cursor: pointer; border: 4px solid var(--cream); transition: transform 0.2s; }
+  .nav-center:hover { transform: scale(1.08); }
+  .onboarding { text-align: center; padding: 32px 24px; display: flex; flex-direction: column; align-items: center; min-height: 100%; }
+  .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .logo-icon { width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+  .logo-text { font-size: 22px; font-weight: 700; color: var(--text); }
+  .hero-illustration { width: 100%; max-width: 360px; margin: 24px 0; }
+  .onboarding h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+  .onboarding p { font-size: 16px; color: var(--text-secondary); line-height: 1.6; max-width: 320px; }
+  .dots { display: flex; gap: 8px; margin: 20px 0; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .dot.active { width: 24px; border-radius: 4px; background: var(--primary); }
+  .home-header { padding: 20px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .home-user { display: flex; align-items: center; gap: 12px; }
+  .home-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 16px; }
+  .home-greeting { font-size: 13px; color: var(--text-secondary); }
+  .home-name { font-size: 17px; font-weight: 600; color: var(--text); }
+  .home-actions { display: flex; gap: 10px; }
+  .home-action-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 18px; }
+  .home-action-badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; background: var(--primary); color: white; border-radius: 50%; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+  .ai-tutor-card { margin: 0 16px; background: var(--green); border-radius: var(--radius-lg); padding: 20px; color: white; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.2s; }
+  .ai-tutor-card:hover { transform: translateY(-2px); }
+  .ai-tutor-left { display: flex; align-items: center; gap: 14px; }
+  .ai-tutor-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .ai-tutor-title { font-size: 17px; font-weight: 600; }
+  .ai-tutor-sub { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 16px 12px; }
+  .section-title { font-size: 18px; font-weight: 600; }
+  .section-link { font-size: 14px; color: var(--primary); cursor: pointer; font-weight: 500; background: none; border: none; font-family: inherit; }
+  .course-card { cursor: pointer; }
+  .course-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .course-time { font-size: 13px; color: var(--text-tertiary); display: flex; align-items: center; gap: 4px; }
+  .course-name { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+  .course-meta { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
+  .diagnostic-header { padding: 24px 16px 16px; text-align: center; }
+  .diagnostic-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .diagnostic-header p { font-size: 14px; color: var(--text-secondary); }
+  .diagnostic-progress { padding: 0 16px 16px; }
+  .diagnostic-progress-text { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+  .question-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin: 0 16px 16px; }
+  .question-number { font-size: 12px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .question-text { font-size: 17px; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+  .option { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; background: white; }
+  .option:hover { border-color: var(--primary); background: rgba(232,93,43,0.03); }
+  .option.selected { border-color: var(--primary); background: rgba(232,93,43,0.08); }
+  .option.answered-correct { border-color: var(--green); background: rgba(27,107,79,0.08); }
+  .option.answered-wrong { border-color: var(--error); background: rgba(220,53,69,0.08); }
+  .option-letter { width: 32px; height: 32px; border-radius: 50%; background: var(--warm-gray); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--text-secondary); flex-shrink: 0; transition: all 0.2s; }
+  .option.selected .option-letter { background: var(--primary); color: white; }
+  .option.answered-correct .option-letter { background: var(--green); color: white; }
+  .option.answered-wrong .option-letter { background: var(--error); color: white; }
+  .option-text { font-size: 15px; color: var(--text); }
+  .explanation-box { padding: 12px 16px; border-radius: var(--radius-md); margin-top: 12px; font-size: 14px; background: rgba(27,107,79,0.08); color: var(--green); line-height: 1.5; }
+  .results-header { padding: 24px 16px; text-align: center; }
+  .results-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .results-header p { font-size: 14px; color: var(--text-secondary); }
+  .radar-container { display: flex; justify-content: center; padding: 20px 0; }
+  .radar-chart { width: 280px; height: 280px; }
+  .strength-weakness { padding: 0 16px 16px; }
+  .sw-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 10px; }
+  .sw-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .sw-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .sw-icon.strength { background: rgba(27,107,79,0.12); }
+  .sw-icon.weakness { background: rgba(232,93,43,0.12); }
+  .sw-title { font-size: 15px; font-weight: 600; }
+  .sw-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .sw-score { margin-left: auto; font-size: 18px; font-weight: 700; }
+  .sw-score.good { color: var(--green); }
+  .sw-score.bad { color: var(--primary); }
+  .path-header { padding: 24px 16px 16px; }
+  .path-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .path-header p { font-size: 14px; color: var(--text-secondary); }
+  .path-timeline { padding: 0 16px; position: relative; }
+  .path-timeline::before { content: ''; position: absolute; left: 31px; top: 0; bottom: 0; width: 3px; background: var(--border); }
+  .path-step { display: flex; gap: 16px; margin-bottom: 16px; position: relative; }
+  .path-step-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--border); border: 3px solid var(--cream); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700; z-index: 2; }
+  .path-step-dot.completed { background: var(--green); }
+  .path-step-dot.current { background: var(--primary); box-shadow: 0 0 0 4px rgba(232,93,43,0.2); }
+  .path-step-dot.upcoming { background: var(--text-tertiary); }
+  .path-step-content { flex: 1; background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; }
+  .path-step-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .path-step-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+  .path-step-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 12px; color: var(--text-tertiary); }
+  .tutor-header { padding: 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); background: white; }
+  .tutor-avatar { width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+  .tutor-info h3 { font-size: 16px; font-weight: 600; }
+  .tutor-status { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .status-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .chat-area { padding: 16px; min-height: 300px; }
+  .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 15px; line-height: 1.5; word-wrap: break-word; }
+  .chat-bubble.bot { background: white; border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 4px; }
+  .chat-bubble.user { background: var(--primary); color: white; margin-left: auto; border-bottom-right-radius: 4px; }
+  .chat-bubble pre { background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px; font-family: 'SF Mono', Monaco, monospace; font-size: 13px; overflow-x: auto; margin: 8px 0; }
+  .chat-bubble code { background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 13px; }
+  .typing-indicator { display: none; align-items: center; gap: 4px; padding: 12px 16px; }
+  .typing-indicator.active { display: flex; }
+  .typing-dot { width: 6px; height: 6px; background: var(--text-tertiary); border-radius: 50%; animation: typingBounce 1.4s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  .suggestion-chips { padding: 0 16px 16px; }
+  .suggestion-label { font-size: 13px; color: var(--text-tertiary); margin-bottom: 10px; }
+  .suggestion-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .suggestion-chip { padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 14px; color: var(--text-secondary); background: white; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .suggestion-chip:hover { border-color: var(--primary); color: var(--primary); }
+  .chat-input-area { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; background: white; }
+  .chat-input { flex: 1; border: 1px solid var(--border); border-radius: 24px; padding: 10px 16px; font-size: 15px; outline: none; background: var(--warm-gray); color: var(--text); font-family: inherit; }
+  .chat-input:focus { border-color: var(--primary); }
+  .chat-send { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.2s; }
+  .chat-send:hover { background: var(--primary-dark); }
+  .explore-header { padding: 20px 16px 12px; }
+  .explore-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .explore-header p { font-size: 14px; color: var(--text-secondary); }
+  .opp-highlight { margin: 0 16px 16px; background: var(--primary); border-radius: var(--radius-lg); padding: 20px; color: white; }
+  .opp-highlight-tag { display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 12px; margin-bottom: 12px; }
+  .opp-highlight h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .opp-highlight p { font-size: 14px; opacity: 0.9; line-height: 1.4; }
+  .filter-tabs { display: flex; gap: 8px; padding: 0 16px 12px; overflow-x: auto; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 14px; color: var(--text-secondary); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+  .filter-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .opp-item { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+  .opp-logo { width: 44px; height: 44px; border-radius: 12px; background: rgba(232,93,43,0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+  .opp-details { flex: 1; }
+  .opp-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .opp-type { font-size: 13px; color: var(--text-tertiary); margin-top: 2px; }
+  .opp-bookmark { color: var(--text-tertiary); cursor: pointer; font-size: 20px; background: none; border: none; padding: 4px; transition: color 0.2s; }
+  .opp-bookmark.saved { color: var(--primary); }
+  .profile-header { padding: 24px 16px; text-align: center; }
+  .profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 700; }
+  .profile-name { font-size: 22px; font-weight: 700; }
+  .profile-meta { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+  .profile-points { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 16px; background: rgba(232,93,43,0.1); color: var(--primary); border-radius: 20px; font-size: 14px; font-weight: 600; }
+  .level-card { margin: 0 16px 20px; }
+  .level-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .level-text { font-size: 15px; font-weight: 600; }
+  .level-next { font-size: 13px; color: var(--text-tertiary); }
+  .achievements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; }
+  .achievement-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; text-align: center; }
+  .achievement-icon { font-size: 28px; margin-bottom: 8px; }
+  .achievement-name { font-size: 14px; font-weight: 600; }
+  .settings-list { padding: 0 16px; }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-label { font-size: 15px; color: var(--text); }
+  .settings-value { font-size: 13px; color: var(--text-tertiary); }
+  .settings-value.green { color: var(--green); font-weight: 600; }
+  .lesson-header { padding: 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); background: white; }
+  .lesson-back { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+  .lesson-title-area { flex: 1; }
+  .lesson-title-area h3 { font-size: 15px; font-weight: 600; }
+  .lesson-title-area p { font-size: 12px; color: var(--text-tertiary); }
+  .lesson-content { padding: 20px 16px; }
+  .lesson-content h2 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .lesson-content h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; }
+  .lesson-content p { font-size: 15px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; }
+  .lesson-content ul { margin-left: 20px; margin-bottom: 16px; }
+  .lesson-content li { font-size: 15px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 8px; }
+  .lesson-content strong { color: var(--text); }
+  .lesson-content .example-box { background: var(--warm-gray); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; margin: 16px 0; }
+  .lesson-content .example-box .label { font-size: 12px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .lesson-nav-bottom { padding: 16px; display: flex; gap: 10px; }
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--text); color: white; padding: 12px 24px; border-radius: var(--radius-md); font-size: 14px; z-index: 1000; transition: transform 0.3s ease; box-shadow: var(--shadow-lg); }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--error); }
+  .offline-banner { position: fixed; top: 0; left: 0; right: 0; background: var(--text); color: white; padding: 8px 16px; text-align: center; font-size: 13px; z-index: 1001; transform: translateY(-100%); transition: transform 0.3s; }
+  .offline-banner.show { transform: translateY(0); }
+  .sync-status { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--green); color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.3s; }
+  .sync-status.show { opacity: 1; }
+  .login-form { padding: 24px 16px; }
+  .login-form h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .login-form p { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .input-group { margin-bottom: 16px; }
+  .input-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .input-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 15px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+  .input-group input:focus { border-color: var(--primary); }
+  .input-group input:disabled { background: var(--warm-gray); }
+  .auth-toggle { text-align: center; margin-top: 16px; font-size: 14px; color: var(--text-secondary); }
+  .auth-toggle button { color: var(--primary); font-weight: 600; background: none; border: none; cursor: pointer; font-family: inherit; }
+  .notification-perm { margin: 0 16px 16px; padding: 16px; background: rgba(27,107,79,0.08); border: 1px solid rgba(27,107,79,0.2); border-radius: var(--radius-md); }
+  .notification-perm h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--green); }
+  .notification-perm p { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+  .reminder-time { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .reminder-time input[type="time"] { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; }
+  .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .lesson-locked { opacity: 0.5; pointer-events: none; }
+  .quiz-container { padding: 0 16px 16px; }
+  .quiz-question { font-size: 17px; font-weight: 600; line-height: 1.5; margin-bottom: 20px; padding: 20px; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); }
+  .quiz-option { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; background: white; }
+  .quiz-option:hover { border-color: var(--primary); }
+  .quiz-option.correct { border-color: var(--green); background: rgba(27,107,79,0.05); }
+  .quiz-option.wrong { border-color: var(--error); background: rgba(220,53,69,0.05); }
+  .quiz-feedback { padding: 12px 16px; border-radius: var(--radius-md); margin-top: 12px; font-size: 14px; }
+  .quiz-feedback.correct { background: rgba(27,107,79,0.08); color: var(--green); }
+  .quiz-feedback.wrong { background: rgba(220,53,69,0.08); color: var(--error); }
+  .quiz-score-card { text-align: center; padding: 32px 24px; }
+  .quiz-score-number { font-size: 56px; font-weight: 700; color: var(--primary); line-height: 1; }
+  .quiz-score-label { font-size: 16px; color: var(--text-secondary); margin-top: 8px; }
+  .difficulty-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+  .difficulty-basic { background: rgba(27,107,79,0.1); color: var(--green); }
+  .difficulty-intermediate { background: rgba(233,196,106,0.2); color: #B8860B; }
+  .difficulty-advanced { background: rgba(232,93,43,0.1); color: var(--primary); }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="offline-banner" id="offlineBanner">📴 You are offline. Learning continues — progress will sync when you reconnect.</div>
+<div class="sync-status" id="syncStatus">✓ Progress synced</div>
+
+<!-- ==================== AUTH SCREEN ==================== -->
+<div id="screen-auth" class="screen active">
+  <div class="content">
+    <div class="onboarding">
+      <div class="logo" style="margin-top: 40px;">
+        <div class="logo-icon">🎓</div>
+        <div class="logo-text">GlobalBridge AI</div>
+      </div>
+      <svg class="hero-illustration" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="200" rx="16" fill="#FDF6E9"/>
+        <ellipse cx="200" cy="180" rx="140" ry="15" fill="#E8D5B5" opacity="0.4"/>
+        <rect x="100" y="120" width="200" height="40" rx="6" fill="#C4956A"/>
+        <rect x="110" y="110" width="180" height="10" rx="3" fill="#A67B5B"/>
+        <circle cx="150" cy="80" r="25" fill="#D4A574"/><rect x="135" y="100" width="30" height="30" rx="4" fill="#E85D2B"/>
+        <circle cx="250" cy="75" r="22" fill="#C4956A"/><rect x="238" y="93" width="24" height="28" rx="4" fill="#2A9D8F"/>
+        <circle cx="200" cy="70" r="24" fill="#E9C46A"/><rect x="185" y="90" width="30" height="28" rx="4" fill="#1B6B4F"/>
+        <rect x="120" y="155" width="20" height="12" rx="2" fill="#1B6B4F" opacity="0.5"/>
+        <rect x="150" y="158" width="16" height="10" rx="2" fill="#E85D2B" opacity="0.5"/>
+        <rect x="240" y="156" width="18" height="12" rx="2" fill="#2A9D8F" opacity="0.5"/>
+      </svg>
+      <div id="auth-form-container">
+        <div class="login-form" id="login-form">
+          <h2>Welcome back</h2>
+          <p>Sign in to continue your learning journey</p>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="auth-email" placeholder="you@example.com" value="">
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="auth-password" placeholder="Enter your password" value="">
+          </div>
+          <button class="btn btn-primary" id="login-btn" onclick="handleLogin()">Sign In</button>
+          <div class="auth-toggle">New here? <button onclick="toggleAuthMode()">Create account</button></div>
+        </div>
+        <div class="login-form" id="signup-form" style="display:none;">
+          <h2>Create account</h2>
+          <p>Start your personalized learning journey</p>
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="signup-name" placeholder="Your full name">
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="signup-email" placeholder="you@example.com">
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="signup-password" placeholder="Create a password (min 6 chars)">
+          </div>
+          <div class="input-group">
+            <label>Education Level</label>
+            <input type="text" id="signup-level" placeholder="e.g. Senior Secondary">
+          </div>
+          <div class="input-group">
+            <label>Location</label>
+            <input type="text" id="signup-location" placeholder="e.g. Lagos, Nigeria">
+          </div>
+          <button class="btn btn-primary" id="signup-btn" onclick="handleSignup()">Create Account</button>
+          <div class="auth-toggle">Already have an account? <button onclick="toggleAuthMode()">Sign in</button></div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" style="margin-top: 16px; width: auto; padding: 10px 24px;" onclick="continueAsGuest()">Continue as guest</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ONBOARDING ==================== -->
+<div id="screen-onboarding" class="screen">
+  <div class="onboarding">
+    <div class="logo" style="margin-top: 20px;">
+      <div class="logo-icon">🎓</div>
+      <div class="logo-text">GlobalBridge AI</div>
+    </div>
+    <svg class="hero-illustration" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="280" rx="16" fill="#FDF6E9"/>
+      <ellipse cx="200" cy="250" rx="160" ry="25" fill="#E8D5B5" opacity="0.4"/>
+      <rect x="80" y="180" width="240" height="50" rx="8" fill="#C4956A"/>
+      <rect x="90" y="170" width="220" height="12" rx="4" fill="#A67B5B"/>
+      <rect x="70" y="220" width="260" height="20" rx="4" fill="#8B6914" opacity="0.3"/>
+      <circle cx="130" cy="130" r="30" fill="#D4A574"/><rect x="110" y="155" width="40" height="42" rx="6" fill="#E85D2B"/>
+      <circle cx="270" cy="120" r="26" fill="#C4956A"/><rect x="255" y="142" width="30" height="38" rx="6" fill="#2A9D8F"/>
+      <circle cx="200" cy="110" r="28" fill="#E9C46A"/><rect x="180" y="135" width="40" height="40" rx="6" fill="#1B6B4F"/>
+      <circle cx="170" cy="95" r="24" fill="#F4A261"/><rect x="155" y="117" width="30" height="35" rx="6" fill="#264653"/>
+      <circle cx="230" cy="90" r="22" fill="#2A9D8F"/><rect x="218" y="110" width="24" height="32" rx="6" fill="#E85D2B"/>
+      <rect x="100" y="235" width="25" height="15" rx="3" fill="#1B6B4F" opacity="0.5"/>
+      <rect x="135" y="238" width="20" height="12" rx="3" fill="#E85D2B" opacity="0.5"/>
+      <rect x="250" y="236" width="22" height="14" rx="3" fill="#2A9D8F" opacity="0.5"/>
+      <rect x="280" y="233" width="18" height="17" rx="3" fill="#264653" opacity="0.5"/>
+      <path d="M200 30 Q215 15 230 28 Q245 18 255 35 Q240 45 225 40 Q210 50 200 30" fill="#E85D2B" opacity="0.25"/>
+      <path d="M110 40 Q125 25 140 38 Q155 28 165 45 Q150 55 135 50 Q120 60 110 40" fill="#2A9D8F" opacity="0.25"/>
+      <path d="M290 50 Q305 35 320 48 Q335 38 345 55 Q330 65 315 60 Q300 70 290 50" fill="#F4A261" opacity="0.25"/>
+    </svg>
+    <h1>Learn without limits</h1>
+    <p>AI-powered education that works offline. Personalized for WAEC, JAMB, coding, and global careers.</p>
+    <div class="dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <button class="btn btn-primary" style="margin-top: 8px;" onclick="startDiagnostic()">Start my learning journey</button>
+    <button class="btn btn-secondary btn-sm" style="margin-top: 10px; width: auto; padding: 10px 24px;" onclick="skipToHome()">Skip for now</button>
+  </div>
+</div>
+
+<!-- ==================== DIAGNOSTIC ==================== -->
+<div id="screen-diagnostic" class="screen">
+  <div class="content">
+    <div class="diagnostic-header">
+      <h1>Skill Assessment</h1>
+      <p>Answer questions so we can build your perfect learning path</p>
+    </div>
+    <div class="diagnostic-progress">
+      <div class="diagnostic-progress-text">
+        <span id="diag-progress-text">Question 1 of 20</span>
+        <span id="diag-percent">5%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="diag-progress-bar" style="width: 5%;"></div></div>
+    </div>
+    <div id="diagnostic-questions"></div>
+  </div>
+</div>
+
+<!-- ==================== RESULTS ==================== -->
+<div id="screen-results" class="screen">
+  <div class="content">
+    <div class="results-header">
+      <h1>Your Learning Profile</h1>
+      <p>Based on your assessment, here is where you stand</p>
+    </div>
+    <div class="radar-container">
+      <svg class="radar-chart" viewBox="0 0 280 280" id="radarSvg">
+        <g id="radar-grid"></g>
+        <polygon id="radar-polygon" fill="rgba(232,93,43,0.2)" stroke="#E85D2B" stroke-width="2"/>
+        <g id="radar-points"></g>
+        <g id="radar-labels"></g>
+      </svg>
+    </div>
+    <div class="strength-weakness" id="strengthWeakness"></div>
+    <div style="padding: 0 16px 24px;">
+      <button class="btn btn-primary" onclick="generateLearningPath()">Generate my learning path</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEARNING PATH ==================== -->
+<div id="screen-learning-path" class="screen">
+  <div class="content">
+    <div class="path-header">
+      <h1>Your Personalized Path</h1>
+      <p id="path-subtitle">From fundamentals to mastery — built just for you</p>
+    </div>
+    <div class="path-timeline" id="path-timeline"></div>
+    <div style="padding: 16px;">
+      <button class="btn btn-green" onclick="goToScreen('home')">Start learning now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HOME ==================== -->
+<div id="screen-home" class="screen">
+  <div class="content">
+    <div class="home-header">
+      <div class="home-user">
+        <div class="home-avatar" id="home-avatar">AO</div>
+        <div>
+          <div class="home-greeting">Good morning,</div>
+          <div class="home-name" id="home-name">Amara O.</div>
+        </div>
+      </div>
+      <div class="home-actions">
+        <div class="home-action-btn" style="color: var(--primary);">🔥<span class="home-action-badge" id="streak-badge">7</span></div>
+        <div class="home-action-btn" onclick="goToScreen('notifications')">🔔<span class="home-action-badge dot-only"></span></div>
+      </div>
+    </div>
+    <div class="ai-tutor-card" onclick="goToScreen('tutor')">
+      <div class="ai-tutor-left">
+        <div class="ai-tutor-icon">✨</div>
+        <div>
+          <div class="ai-tutor-title">Ask GlobalBridge anything</div>
+          <div class="ai-tutor-sub">Your AI tutor is online 24/7</div>
+        </div>
+      </div>
+      <div class="ai-tutor-arrow">→</div>
+    </div>
+    <div class="section-header">
+      <div class="section-title">Continue learning</div>
+      <button class="section-link" onclick="goToScreen('paths')">See all</button>
+    </div>
+    <div id="home-courses"></div>
+    <div class="section-header">
+      <div class="section-title">Today's goal</div>
+    </div>
+    <div class="card" style="margin-bottom: 20px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div style="width: 40px; height: 40px; background: rgba(232,93,43,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🎯</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 600;">Complete 2 lessons</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">You are on a <span id="home-streak">7</span>-day streak!</div>
+        </div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="daily-goal-bar" style="width: 50%;"></div></div>
+      <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--text-tertiary);">
+        <span id="daily-goal-text">1 of 2 completed</span>
+        <span>+50 pts</span>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="goToScreen('home')" data-nav="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="goToScreen('paths')" data-nav="paths"><div class="nav-icon">⫘</div><div class="nav-label">Paths</div></button>
+    <div class="nav-center" onclick="goToScreen('tutor')">✨</div>
+    <button class="nav-item" onclick="goToScreen('explore')" data-nav="explore"><div class="nav-icon">🧭</div><div class="nav-label">Explore</div></button>
+    <button class="nav-item" onclick="goToScreen('profile')" data-nav="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ==================== PATHS ==================== -->
+<div id="screen-paths" class="screen">
+  <div class="content">
+    <div style="padding: 20px 16px;">
+      <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">Learning paths</h1>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">Structured courses to reach your goals</p>
+      <div style="display: flex; align-items: center; gap: 10px; background: var(--warm-gray); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 16px;">
+        <span style="color: var(--text-tertiary); font-size: 18px;">🔍</span>
+        <input type="text" placeholder="Search subjects and courses" id="pathSearch" oninput="filterPaths()" style="border: none; background: none; outline: none; font-size: 15px; color: var(--text); width: 100%; font-family: inherit;">
+      </div>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter(this, 'all')">All</button>
+      <button class="filter-tab" onclick="setFilter(this, 'progress')">In progress</button>
+      <button class="filter-tab" onclick="setFilter(this, 'africa')">Africa</button>
+      <button class="filter-tab" onclick="setFilter(this, 'international')">International</button>
+      <button class="filter-tab" onclick="setFilter(this, 'coding')">Coding</button>
+    </div>
+    <div id="paths-list"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goToScreen('home')" data-nav="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+    <button class="nav-item active" onclick="goToScreen('paths')" data-nav="paths"><div class="nav-icon">⫘</div><div class="nav-label">Paths</div></button>
+    <div class="nav-center" onclick="goToScreen('tutor')">✨</div>
+    <button class="nav-item" onclick="goToScreen('explore')" data-nav="explore"><div class="nav-icon">🧭</div><div class="nav-label">Explore</div></button>
+    <button class="nav-item" onclick="goToScreen('profile')" data-nav="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ==================== LESSON ==================== -->
+<div id="screen-lesson" class="screen">
+  <div class="lesson-header">
+    <button class="lesson-back" onclick="goToScreen('paths')">←</button>
+    <div class="lesson-title-area">
+      <h3 id="lesson-title">Lesson Title</h3>
+      <p id="lesson-subtitle">Course Name · Lesson 1 of 10</p>
+    </div>
+  </div>
+  <div class="content" style="height: calc(100vh - 130px);">
+    <div class="lesson-content" id="lesson-content"></div>
+    <div class="lesson-nav-bottom">
+      <button class="btn btn-secondary" style="flex: 1;" onclick="prevLesson()">← Previous</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="nextLesson()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div id="screen-quiz" class="screen">
+  <div class="lesson-header">
+    <button class="lesson-back" onclick="goToScreen('paths')">←</button>
+    <div class="lesson-title-area">
+      <h3 id="quiz-title">Quiz</h3>
+      <p id="quiz-subtitle">Test your knowledge</p>
+    </div>
+  </div>
+  <div class="content" style="height: calc(100vh - 70px);">
+    <div id="quiz-container"></div>
+  </div>
+</div>
+
+<!-- ==================== TUTOR ==================== -->
+<div id="screen-tutor" class="screen">
+  <div class="tutor-header">
+    <div class="tutor-avatar">✨</div>
+    <div class="tutor-info">
+      <h3>GlobalBridge AI Tutor</h3>
+      <div class="tutor-status"><span class="status-dot"></span>Online · Always here to help</div>
+    </div>
+  </div>
+  <div class="content" style="height: calc(100vh - 140px);">
+    <div class="chat-area" id="chatArea">
+      <div class="chat-bubble bot">Hey there! 👋 I am GlobalBridge, your AI study buddy. I can help with WAEC, JAMB, coding, career advice, or any subject. What are we learning today?</div>
+    </div>
+    <div class="typing-indicator" id="typingIndicator">
+      <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+    </div>
+    <div class="suggestion-chips" id="suggestionChips">
+      <div class="suggestion-label">Try asking</div>
+      <div class="suggestion-row">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">Explain photosynthesis</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">Solve x squared plus 5x plus 6</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">JAMB study plan</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">Python for-loop</button>
+      </div>
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
+    <button class="chat-send" onclick="sendMessage()">➤</button>
+  </div>
+  <div class="bottom-nav" style="display: none;"></div>
+</div>
+
+<!-- ==================== EXPLORE ==================== -->
+<div id="screen-explore" class="screen">
+  <div class="content">
+    <div class="explore-header">
+      <h1>Opportunities</h1>
+      <p>Scholarships and internships across Africa and worldwide</p>
+    </div>
+    <div class="opp-highlight">
+      <div class="opp-highlight-tag">Matched to you</div>
+      <h3>3 new scholarships fit your profile</h3>
+      <p>Based on your goals and location. Apply before deadlines close.</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setOppFilter(this, 'all')">All</button>
+      <button class="filter-tab" onclick="setOppFilter(this, 'scholarship')">Scholarship</button>
+      <button class="filter-tab" onclick="setOppFilter(this, 'internship')">Internship</button>
+      <button class="filter-tab" onclick="setOppFilter(this, 'program')">Program</button>
+    </div>
+    <div id="opp-list"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goToScreen('home')" data-nav="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="goToScreen('paths')" data-nav="paths"><div class="nav-icon">⫘</div><div class="nav-label">Paths</div></button>
+    <div class="nav-center" onclick="goToScreen('tutor')">✨</div>
+    <button class="nav-item active" onclick="goToScreen('explore')" data-nav="explore"><div class="nav-icon">🧭</div><div class="nav-label">Explore</div></button>
+    <button class="nav-item" onclick="goToScreen('profile')" data-nav="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ==================== NOTIFICATIONS ==================== -->
+<div id="screen-notifications" class="screen">
+  <div class="content">
+    <div style="padding: 24px 16px;">
+      <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">Notifications</h1>
+      <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">Stay on track with your learning</p>
+    </div>
+    <div class="notification-perm">
+      <h4>📅 Daily Study Reminders</h4>
+      <p>Get reminded to study every day at your chosen time. Consistency is key!</p>
+      <div class="reminder-time">
+        <label style="font-size: 14px;">Remind me at:</label>
+        <input type="time" id="reminder-time" value="08:00">
+      </div>
+      <button class="btn btn-green btn-sm" style="margin-top: 12px; width: auto;" onclick="requestNotificationPermission()">Enable reminders</button>
+    </div>
+    <div id="notification-list">
+      <div class="card" style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; background: rgba(232,93,43,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🏆</div>
+        <div style="flex: 1;">
+          <div style="font-size: 15px; font-weight: 600;">Achievement unlocked!</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">You completed 7-day streak</div>
+        </div>
+        <span style="font-size: 12px; color: var(--text-tertiary);">2h ago</span>
+      </div>
+      <div class="card" style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; background: rgba(27,107,79,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">📚</div>
+        <div style="flex: 1;">
+          <div style="font-size: 15px; font-weight: 600;">Continue WAEC Math</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">You are 68% through — keep going!</div>
+        </div>
+        <span style="font-size: 12px; color: var(--text-tertiary);">5h ago</span>
+      </div>
+      <div class="card" style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; background: rgba(233,196,106,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🎓</div>
+        <div style="flex: 1;">
+          <div style="font-size: 15px; font-weight: 600;">New scholarship match</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">MTN Foundation — deadline Aug 30</div>
+        </div>
+        <span style="font-size: 12px; color: var(--text-tertiary);">1d ago</span>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goToScreen('home')" data-nav="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="goToScreen('paths')" data-nav="paths"><div class="nav-icon">⫘</div><div class="nav-label">Paths</div></button>
+    <div class="nav-center" onclick="goToScreen('tutor')">✨</div>
+    <button class="nav-item" onclick="goToScreen('explore')" data-nav="explore"><div class="nav-icon">🧭</div><div class="nav-label">Explore</div></button>
+    <button class="nav-item active" onclick="goToScreen('profile')" data-nav="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- ==================== PROFILE ==================== -->
+<div id="screen-profile" class="screen">
+  <div class="content">
+    <div class="profile-header">
+      <div class="profile-avatar-lg" id="profile-avatar">AO</div>
+      <div class="profile-name" id="profile-name">Amara Okafor</div>
+      <div class="profile-meta" id="profile-meta">Senior Secondary · Lagos</div>
+      <div class="profile-points">🏆 <span id="profile-points">1,240</span> points</div>
+    </div>
+    <div class="card level-card">
+      <div class="level-top">
+        <span class="level-text">Level 4 · Scholar</span>
+        <span class="level-next">260 pts to Level 5</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width: 78%;"></div></div>
+    </div>
+    <div class="section-header" style="padding-top: 8px;">
+      <div class="section-title">Achievements</div>
+    </div>
+    <div class="achievements-grid">
+      <div class="achievement-card"><div class="achievement-icon">🔥</div><div class="achievement-name">7-day streak</div></div>
+      <div class="achievement-card"><div class="achievement-icon">🏆</div><div class="achievement-name">Top 5%</div></div>
+      <div class="achievement-card"><div class="achievement-icon" style="color: var(--green);">🥇</div><div class="achievement-name">Math whiz</div></div>
+      <div class="achievement-card"><div class="achievement-icon" style="color: var(--primary);">📚</div><div class="achievement-name">100 lessons</div></div>
+    </div>
+    <div class="section-header"><div class="section-title">Settings</div></div>
+    <div class="settings-list">
+      <div class="settings-row"><span class="settings-label">Download for offline</span><span class="settings-value" id="offline-courses-count">12 courses saved</span></div>
+      <div class="settings-row"><span class="settings-label">Career goals</span><span class="settings-value">Software Engineer</span></div>
+      <div class="settings-row"><span class="settings-label">Notifications</span><span class="settings-value green" id="notif-status">On</span></div>
+      <div class="settings-row"><span class="settings-label">Learning path</span><span class="settings-value" id="profile-path">WAEC + Coding</span></div>
+      <div class="settings-row"><span class="settings-label">Account</span><span class="settings-value" id="account-status">Guest</span></div>
+    </div>
+    <div style="padding: 16px; display: flex; gap: 10px; flex-direction: column;">
+      <button class="btn btn-secondary" onclick="retakeDiagnostic()">Retake assessment</button>
+      <button class="btn btn-outline" onclick="handleLogout()" id="logout-btn" style="display:none;">Log out</button>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-item" onclick="goToScreen('home')" data-nav="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+    <button class="nav-item" onclick="goToScreen('paths')" data-nav="paths"><div class="nav-icon">⫘</div><div class="nav-label">Paths</div></button>
+    <div class="nav-center" onclick="goToScreen('tutor')">✨</div>
+    <button class="nav-item" onclick="goToScreen('explore')" data-nav="explore"><div class="nav-icon">🧭</div><div class="nav-label">Explore</div></button>
+    <button class="nav-item active" onclick="goToScreen('profile')" data-nav="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== SERVICE WORKER REGISTRATION ====================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+    const CACHE_NAME = 'globalbridge-v1';
+    const urlsToCache = [
+      '/',
+      self.location.href
+    ];
+    self.addEventListener('install', event => {
+      event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+      );
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', event => {
+      event.waitUntil(self.clients.claim());
+    });
+    self.addEventListener('fetch', event => {
+      event.respondWith(
+        caches.match(event.request).then(response => {
+          if (response) return response;
+          return fetch(event.request).catch(() => {
+            return new Response('Offline - content cached', { status: 200 });
+          });
+        })
+      );
+    });
+  `)).then(reg => console.log('SW registered')).catch(err => console.log('SW failed', err));
+}
+
+// ==================== OFFLINE DETECTION ====================
+function updateOnlineStatus() {
+  const banner = document.getElementById('offlineBanner');
+  if (!navigator.onLine) {
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+    syncPendingData();
+  }
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function showSyncStatus() {
+  const el = document.getElementById('syncStatus');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ==================== LOCAL STORAGE / SYNC ENGINE ====================
+const Storage = {
+  get(key) { try { return JSON.parse(localStorage.getItem('gb_' + key)); } catch(e) { return null; } },
+  set(key, val) { localStorage.setItem('gb_' + key, JSON.stringify(val)); },
+  remove(key) { localStorage.removeItem('gb_' + key); }
+};
+
+let pendingSync = Storage.get('pendingSync') || [];
+
+function queueSync(action, data) {
+  pendingSync.push({ action, data, timestamp: Date.now() });
+  Storage.set('pendingSync', pendingSync);
+}
+
+function syncPendingData() {
+  if (pendingSync.length === 0 || !navigator.onLine) return;
+  // Simulate sync - in production, this would POST to your backend
+  console.log('Syncing ' + pendingSync.length + ' pending actions...');
+  pendingSync = [];
+  Storage.set('pendingSync', pendingSync);
+  showSyncStatus();
+}
+
+// ==================== EXPANDED DIAGNOSTIC QUESTIONS (20 total) ====================
+const diagnosticQuestions = [
+  // MATHEMATICS (5 questions)
+  {
+    id: 1, subject: 'Mathematics', difficulty: 'basic',
+    question: 'What is the value of x in: 2x + 6 = 14?',
+    options: ['x = 3', 'x = 4', 'x = 5', 'x = 7'],
+    correct: 1,
+    explanation: 'Subtract 6: 2x = 8. Divide by 2: x = 4.'
+  },
+  {
+    id: 2, subject: 'Mathematics', difficulty: 'basic',
+    question: 'Simplify: 3/4 + 1/2',
+    options: ['4/6', '5/4', '1', '1/4'],
+    correct: 1,
+    explanation: 'Convert 1/2 to 2/4. Then 3/4 + 2/4 = 5/4 = 1.25'
+  },
+  {
+    id: 3, subject: 'Mathematics', difficulty: 'intermediate',
+    question: 'Factor: x² - 5x + 6',
+    options: ['(x-2)(x-3)', '(x+2)(x+3)', '(x-1)(x-6)', '(x+1)(x-6)'],
+    correct: 0,
+    explanation: 'Need numbers that multiply to 6 and add to -5: -2 and -3.'
+  },
+  {
+    id: 4, subject: 'Mathematics', difficulty: 'intermediate',
+    question: 'In a right triangle, if a = 3 and b = 4, find c.',
+    options: ['5', '6', '7', '25'],
+    correct: 0,
+    explanation: 'Pythagorean theorem: c² = 3² + 4² = 9 + 16 = 25. c = 5.'
+  },
+  {
+    id: 5, subject: 'Mathematics', difficulty: 'advanced',
+    question: 'If log₂(x) = 5, what is x?',
+    options: ['10', '25', '32', '64'],
+    correct: 2,
+    explanation: 'log₂(x) = 5 means 2⁵ = x. 2⁵ = 32.'
+  },
+  // PHYSICS (5 questions)
+  {
+    id: 6, subject: 'Physics', difficulty: 'basic',
+    question: 'What is the SI unit of force?',
+    options: ['Watt', 'Joule', 'Newton', 'Pascal'],
+    correct: 2,
+    explanation: 'The Newton (N) is the SI unit of force.'
+  },
+  {
+    id: 7, subject: 'Physics', difficulty: 'basic',
+    question: 'Which of these is a scalar quantity?',
+    options: ['Velocity', 'Force', 'Speed', 'Acceleration'],
+    correct: 2,
+    explanation: 'Speed has magnitude only. Velocity, force, and acceleration are vectors.'
+  },
+  {
+    id: 8, subject: 'Physics', difficulty: 'intermediate',
+    question: 'A car accelerates from rest at 2 m/s² for 5s. Final velocity?',
+    options: ['5 m/s', '10 m/s', '12 m/s', '25 m/s'],
+    correct: 1,
+    explanation: 'v = u + at = 0 + (2 × 5) = 10 m/s.'
+  },
+  {
+    id: 9, subject: 'Physics', difficulty: 'intermediate',
+    question: 'What is the resistance of a 240V, 60W bulb?',
+    options: ['4 ohms', '960 ohms', '14400 ohms', '240 ohms'],
+    correct: 1,
+    explanation: 'P = V²/R → R = V²/P = 240²/60 = 57600/60 = 960 ohms.'
+  },
+  {
+    id: 10, subject: 'Physics', difficulty: 'advanced',
+    question: 'A 2kg mass moving at 3 m/s collides with a stationary 1kg mass. If they stick together, what is their final velocity?',
+    options: ['1 m/s', '2 m/s', '3 m/s', '6 m/s'],
+    correct: 1,
+    explanation: 'Conservation of momentum: (2×3) + (1×0) = (2+1)v → 6 = 3v → v = 2 m/s.'
+  },
+  // CHEMISTRY (3 questions)
+  {
+    id: 11, subject: 'Chemistry', difficulty: 'basic',
+    question: 'What is the chemical formula for water?',
+    options: ['HO', 'H₂O', 'H₂O₂', 'OH'],
+    correct: 1,
+    explanation: 'Water is H₂O — two hydrogen atoms and one oxygen atom.'
+  },
+  {
+    id: 12, subject: 'Chemistry', difficulty: 'intermediate',
+    question: 'How many moles are in 36g of water (H=1, O=16)?',
+    options: ['1', '2', '3', '4'],
+    correct: 1,
+    explanation: 'Molar mass of H₂O = 2(1) + 16 = 18 g/mol. Moles = 36/18 = 2.'
+  },
+  {
+    id: 13, subject: 'Chemistry', difficulty: 'advanced',
+    question: 'In the reaction 2H₂ + O₂ → 2H₂O, what is the limiting reagent if you have 4 moles of H₂ and 3 moles of O₂?',
+    options: ['H₂', 'O₂', 'Neither', 'Both'],
+    correct: 0,
+    explanation: '4 moles H₂ needs 2 moles O₂. You have 3 moles O₂ (excess). H₂ runs out first.'
+  },
+  // BIOLOGY (3 questions)
+  {
+    id: 14, subject: 'Biology', difficulty: 'basic',
+    question: 'What is the powerhouse of the cell?',
+    options: ['Nucleus', 'Ribosome', 'Mitochondria', 'Chloroplast'],
+    correct: 2,
+    explanation: 'Mitochondria produce ATP through cellular respiration.'
+  },
+  {
+    id: 15, subject: 'Biology', difficulty: 'intermediate',
+    question: 'During photosynthesis, what gas is released as a byproduct?',
+    options: ['CO₂', 'O₂', 'N₂', 'H₂'],
+    correct: 1,
+    explanation: 'Plants release oxygen (O₂) as a byproduct of photosynthesis.'
+  },
+  {
+    id: 16, subject: 'Biology', difficulty: 'advanced',
+    question: 'In Mendelian genetics, if a heterozygous tall plant (Tt) is crossed with a homozygous short plant (tt), what percentage of offspring will be tall?',
+    options: ['0%', '25%', '50%', '75%'],
+    correct: 2,
+    explanation: 'Tt × tt produces Tt, Tt, tt, tt. 50% tall (Tt), 50% short (tt).'
+  },
+  // ENGLISH (2 questions)
+  {
+    id: 17, subject: 'English', difficulty: 'basic',
+    question: 'Choose the correct sentence:',
+    options: ['She do not like apples.', 'She does not likes apples.', 'She does not like apples.', 'She not like apples.'],
+    correct: 2,
+    explanation: 'Third person singular uses "does not" + base verb.'
+  },
+  {
+    id: 18, subject: 'English', difficulty: 'intermediate',
+    question: 'Identify the literary device: "The wind whispered through the trees."',
+    options: ['Simile', 'Metaphor', 'Personification', 'Hyperbole'],
+    correct: 2,
+    explanation: 'Personification gives human qualities (whispering) to non-human things.'
+  },
+  // ECONOMICS (2 questions)
+  {
+    id: 19, subject: 'Economics', difficulty: 'basic',
+    question: 'What happens to demand when price increases (ceteris paribus)?',
+    options: ['Demand increases', 'Demand decreases', 'No change', 'Supply increases'],
+    correct: 1,
+    explanation: 'Law of demand: as price rises, quantity demanded falls.'
+  },
+  {
+    id: 20, subject: 'Economics', difficulty: 'intermediate',
+    question: 'If GDP is $500 billion and population is 50 million, what is GDP per capita?',
+    options: ['$100', '$1,000', '$10,000', '$100,000'],
+    correct: 2,
+    explanation: 'GDP per capita = GDP / Population = $500,000,000,000 / 50,000,000 = $10,000.'
+  }
+];
+
+// ==================== COURSES WITH REAL WAEC/JAMB CURRICULUM ====================
+const courses = [
+  { id: 'math-waec', name: 'WAEC Mathematics Mastery', subject: 'Mathematics', category: 'progress africa', lessons: 42, hours: 18, progress: 68, completed: 29, level: 'Senior Secondary', color: 'primary' },
+  { id: 'physics-jamb', name: 'JAMB Physics Prep', subject: 'Physics', category: 'progress africa', lessons: 36, hours: 12, progress: 42, completed: 15, level: 'Senior Secondary', color: 'green' },
+  { id: 'english-waec', name: 'WAEC English Language', subject: 'English', category: 'africa', lessons: 50, hours: 24, progress: 0, completed: 0, level: 'Senior Secondary', color: 'teal' },
+  { id: 'python-begin', name: 'Python for Beginners', subject: 'Coding', category: 'international coding', lessons: 45, hours: 30, progress: 0, completed: 0, level: 'All levels', color: 'teal' },
+  { id: 'sat-prep', name: 'SAT Preparation Course', subject: 'Career', category: 'international', lessons: 20, hours: 8, progress: 0, completed: 0, level: 'International', color: 'gold' },
+  { id: 'biology-waec', name: 'WAEC Biology', subject: 'Biology', category: 'africa', lessons: 38, hours: 16, progress: 0, completed: 0, level: 'Senior Secondary', color: 'green' },
+  { id: 'chem-jamb', name: 'JAMB Chemistry', subject: 'Chemistry', category: 'africa', lessons: 40, hours: 18, progress: 0, completed: 0, level: 'Senior Secondary', color: 'primary' },
+  { id: 'web-dev', name: 'Web Development Fundamentals', subject: 'Coding', category: 'international coding', lessons: 30, hours: 22, progress: 0, completed: 0, level: 'All levels', color: 'teal' },
+  { id: 'econ-waec', name: 'WAEC Economics', subject: 'Economics', category: 'africa', lessons: 35, hours: 15, progress: 0, completed: 0, level: 'Senior Secondary', color: 'gold' },
+  { id: 'gov-waec', name: 'WAEC Government', subject: 'Government', category: 'africa', lessons: 32, hours: 14, progress: 0, completed: 0, level: 'Senior Secondary', color: 'purple' }
+];
+
+const opportunities = [
+  { id: 1, name: 'MTN Foundation Scholarship', type: 'scholarship', org: 'MTN', location: 'Nigeria', deadline: 'Aug 30', saved: false, desc: 'Full scholarship for STEM students in Nigerian universities.' },
+  { id: 2, name: 'ALX Africa Software Engineering', type: 'program', org: 'ALX', location: 'Remote', deadline: 'Rolling', saved: false, desc: '12-month fully-funded software engineering program.' },
+  { id: 3, name: 'Mastercard Foundation Scholars', type: 'scholarship', org: 'Mastercard', location: 'Multiple', deadline: 'Oct 15', saved: false, desc: 'Full scholarships at partner universities across Africa.' },
+  { id: 4, name: 'Google Africa Developer Scholarship', type: 'program', org: 'Google', location: 'Online', deadline: 'Open now', saved: true, desc: 'Free access to Pluralsight courses and Google certification.' },
+  { id: 5, name: 'UN Youth Volunteer Program', type: 'internship', org: 'UN', location: 'Global', deadline: 'Sep 1', saved: false, desc: 'Volunteer opportunities with UN agencies worldwide.' },
+  { id: 6, name: 'Andela Learning Community', type: 'program', org: 'Andela', location: 'Africa', deadline: 'Rolling', saved: false, desc: 'Community-driven tech learning with mentorship.' },
+  { id: 7, name: 'Chevening Scholarship', type: 'scholarship', org: 'UK Gov', location: 'UK', deadline: 'Nov 1', saved: false, desc: 'Full UK Masters scholarship for future leaders.' },
+  { id: 8, name: 'Flutterwave Internship', type: 'internship', org: 'Flutterwave', location: 'Lagos/Remote', deadline: 'Aug 15', saved: false, desc: 'Paid internship in fintech engineering and product.' }
+];
+
+const tutorResponses = {
+  'explain photosynthesis': 'Photosynthesis is how plants make their food! 🌱\n\n**The process:**\n1. Plants absorb sunlight through chlorophyll (the green stuff in leaves)\n2. They take in CO2 from the air and water from roots\n3. Using light energy, they convert these into **glucose** (sugar) and **oxygen**\n\n**Equation:** 6CO2 + 6H2O + light → C6H12O6 + 6O2\n\nThink of leaves as tiny solar panels that power the entire plant!',
+  'solve x squared plus 5x plus 6': 'Let us solve this step by step! 🧮\n\n**Step 1:** Factor the quadratic\nWe need two numbers that multiply to 6 and add to 5.\nThose numbers are **2 and 3**.\n\n**Step 2:** Write the factors\n(x + 2)(x + 3) = 0\n\n**Step 3:** Solve each factor\nx + 2 = 0  →  **x = -2**\nx + 3 = 0  →  **x = -3**\n\n**Answer: x = -2 or x = -3**',
+  'jamb study plan': 'Here is your 12-week JAMB mastery plan! 📚\n\n**Weeks 1-4: Foundation**\n• Review all topics in your 4 subjects\n• 2 hours daily, focus on weak areas (we will identify these from your assessment!)\n• Complete 1 past paper per week\n\n**Weeks 5-8: Practice**\n• Past questions (10 years minimum)\n• Timed practice tests (3 hours, exam conditions)\n• Note recurring question patterns\n\n**Weeks 9-10: Intense Revision**\n• Mock exams under real conditions\n• Review ALL mistakes in an error notebook\n• Focus on speed and accuracy\n\n**Weeks 11-12: Final Prep**\n• Light revision only — no new topics!\n• Rest, sleep well, build confidence\n• Exam strategy: attempt easy questions first\n\nWant me to break down any specific subject?',
+  'python for-loop': 'A for loop in Python lets you repeat code for each item! 🐍\n\n**Example 1: Print each fruit**\nfruits = ["apple", "banana", "cherry"]\nfor fruit in fruits:\n    print(fruit)\n\n**Output:** apple, banana, cherry\n\n**Example 2: Using range()**\nfor i in range(5):\n    print(i)  // Prints 0, 1, 2, 3, 4\n\n**Key idea:** The loop variable takes each value one at a time.\n\nWant to see how to use for loops with if statements?'
+};
+
+// ==================== REAL WAEC/JAMB CURRICULUM CONTENT ====================
+const curriculumContent = {
+  'math-waec': {
+    title: 'Number Systems & Surds',
+    subtitle: 'WAEC Mathematics Mastery · Lesson 1 of 42',
+    content: `
+      <h2>1. Number Systems</h2>
+      <p>In WAEC Mathematics, you need to master different number types. <strong>Natural numbers</strong> are counting numbers (1, 2, 3...). <strong>Integers</strong> include negatives (...-2, -1, 0, 1, 2...). <strong>Rational numbers</strong> can be expressed as fractions p/q where q ≠ 0.</p>
+      <div class="example-box">
+        <div class="label">WAEC Past Question (2019)</div>
+        <p style="margin:0; color:var(--text);"><strong>Express 0.75 as a fraction in its lowest terms.</strong></p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);">Solution: 0.75 = 75/100 = 3/4</p>
+      </div>
+      <h2>2. Surds</h2>
+      <p>A <strong>surd</strong> is an irrational number expressed as a root. Common WAEC surd rules:</p>
+      <ul>
+        <li>√a × √b = √(ab)</li>
+        <li>√a / √b = √(a/b)</li>
+        <li>√(a²) = |a|</li>
+        <li>To rationalize 1/√a, multiply by √a/√a</li>
+      </ul>
+      <div class="example-box">
+        <div class="label">Worked Example</div>
+        <p style="margin:0; color:var(--text);"><strong>Simplify: √50 + √18 - √8</strong></p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);">√50 = √(25×2) = 5√2<br>√18 = √(9×2) = 3√2<br>√8 = √(4×2) = 2√2<br><strong>Answer: 5√2 + 3√2 - 2√2 = 6√2</strong></p>
+      </div>
+      <h2>3. JAMB Tip</h2>
+      <p>JAMB often tests surd rationalization in word problems. Always look for perfect square factors first!</p>
+    `
+  },
+  'physics-jamb': {
+    title: 'Kinematics — Motion in a Straight Line',
+    subtitle: 'JAMB Physics Prep · Lesson 1 of 36',
+    content: `
+      <h2>1. Definitions</h2>
+      <p><strong>Displacement</strong> is distance in a specified direction (vector). <strong>Distance</strong> is the total path length (scalar). <strong>Velocity</strong> is rate of change of displacement. <strong>Acceleration</strong> is rate of change of velocity.</p>
+      <h2>2. Equations of Motion (JAMB Essential)</h2>
+      <p>For uniform acceleration, these five equations are tested every year:</p>
+      <ul>
+        <li><strong>v = u + at</strong> — velocity after time t</li>
+        <li><strong>s = ut + ½at²</strong> — displacement</li>
+        <li><strong>v² = u² + 2as</strong> — velocity without time</li>
+        <li><strong>s = ½(u + v)t</strong> — average velocity</li>
+        <li><strong>s = vt - ½at²</strong> — displacement from final velocity</li>
+      </ul>
+      <div class="example-box">
+        <div class="label">JAMB Past Question (2022)</div>
+        <p style="margin:0; color:var(--text);"><strong>A car starts from rest and accelerates uniformly at 2 m/s² for 10 seconds. Calculate the distance traveled.</strong></p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);">Given: u = 0, a = 2 m/s², t = 10s<br>Using s = ut + ½at²<br>s = 0 + ½(2)(10)² = 100 meters<br><strong>Answer: 100 m</strong></p>
+      </div>
+      <h2>3. Graphs of Motion</h2>
+      <p>JAMB loves graph questions. Remember: <strong>the gradient of a displacement-time graph = velocity</strong>, and <strong>the gradient of a velocity-time graph = acceleration</strong>. The area under a velocity-time graph gives displacement.</p>
+    `
+  },
+  'english-waec': {
+    title: 'Comprehension & Summary Writing',
+    subtitle: 'WAEC English Language · Lesson 1 of 50',
+    content: `
+      <h2>1. Comprehension Strategy</h2>
+      <p>WAEC comprehension passages test your ability to understand, interpret, and evaluate written text. Follow this proven approach:</p>
+      <ul>
+        <li><strong>Skim first:</strong> Read the passage quickly to get the main idea</li>
+        <li><strong>Read questions:</strong> Know what you are looking for before detailed reading</li>
+        <li><strong>Scan for answers:</strong> Go back to the text with specific questions in mind</li>
+        <li><strong>Check context:</strong> Ensure your answer fits the surrounding text</li>
+      </ul>
+      <h2>2. Types of Comprehension Questions</h2>
+      <ul>
+        <li><strong>Literal:</strong> Direct facts from the text ("What time did...?")</li>
+        <li><strong>Inferential:</strong> Reading between the lines ("What does the writer imply...?")</li>
+        <li><strong>Evaluative:</strong> Judging the text ("Do you agree that...?")</li>
+        <li><strong>Vocabulary:</strong> Word meaning in context</li>
+      </ul>
+      <div class="example-box">
+        <div class="label">Practice Question</div>
+        <p style="margin:0; color:var(--text);"><strong>Passage:</strong> "The politician's speech was full of sound and fury, signifying nothing."</p>
+        <p style="margin:8px 0 0; color:var(--text);"><strong>Question:</strong> What does the writer suggest about the politician's speech?</p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);"><strong>Answer:</strong> The speech was loud and impressive-sounding but lacked real substance or meaning. (Allusion to Shakespeare's Macbeth)</p>
+      </div>
+      <h2>3. Summary Writing (WAEC Section B)</h2>
+      <p>You must summarize a passage in a specified number of words (usually 60-80). Key rules:</p>
+      <ul>
+        <li>Use your own words — do NOT copy phrases</li>
+        <li>Include ONLY the main points (usually 5-6 points)</li>
+        <li>Write in continuous prose, not bullet points</li>
+        <li>Stay within the word limit (penalties apply)</li>
+      </ul>
+    `
+  },
+  'biology-waec': {
+    title: 'Cell Structure & Function',
+    subtitle: 'WAEC Biology · Lesson 1 of 38',
+    content: `
+      <h2>1. The Cell Theory</h2>
+      <p>All living organisms are made of cells. The cell is the basic unit of life. All cells come from pre-existing cells. This is the foundation of WAEC Biology.</p>
+      <h2>2. Plant vs Animal Cells (WAEC Favorite)</h2>
+      <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;">
+        <tr style="background:var(--warm-gray);"><th style="padding:10px; border:1px solid var(--border); text-align:left;">Feature</th><th style="padding:10px; border:1px solid var(--border); text-align:left;">Plant Cell</th><th style="padding:10px; border:1px solid var(--border); text-align:left;">Animal Cell</th></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Cell wall</td><td style="padding:10px; border:1px solid var(--border);">Present (cellulose)</td><td style="padding:10px; border:1px solid var(--border);">Absent</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Chloroplasts</td><td style="padding:10px; border:1px solid var(--border);">Present</td><td style="padding:10px; border:1px solid var(--border);">Absent</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Vacuole</td><td style="padding:10px; border:1px solid var(--border);">Large, central</td><td style="padding:10px; border:1px solid var(--border);">Small, temporary</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Shape</td><td style="padding:10px; border:1px solid var(--border);">Fixed, rectangular</td><td style="padding:10px; border:1px solid var(--border);">Irregular, round</td></tr>
+      </table>
+      <h2>3. Cell Organelles</h2>
+      <ul>
+        <li><strong>Nucleus:</strong> Controls cell activities, contains DNA</li>
+        <li><strong>Mitochondria:</strong> Site of respiration, produces ATP</li>
+        <li><strong>Ribosomes:</strong> Protein synthesis</li>
+        <li><strong>Golgi body:</strong> Packaging and secretion of proteins</li>
+        <li><strong>Endoplasmic reticulum:</strong> Transport network</li>
+      </ul>
+      <div class="example-box">
+        <div class="label">WAEC Past Question (2021)</div>
+        <p style="margin:0; color:var(--text);"><strong>State two differences between a plant cell and an animal cell.</strong></p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);">1. Plant cells have a cellulose cell wall; animal cells do not.<br>2. Plant cells have chloroplasts for photosynthesis; animal cells do not.</p>
+      </div>
+    `
+  },
+  'chem-jamb': {
+    title: 'Atomic Structure & the Periodic Table',
+    subtitle: 'JAMB Chemistry · Lesson 1 of 40',
+    content: `
+      <h2>1. Atomic Structure</h2>
+      <p>An atom consists of <strong>protons</strong> (positive, in nucleus), <strong>neutrons</strong> (neutral, in nucleus), and <strong>electrons</strong> (negative, orbiting nucleus). The atomic number = number of protons. Mass number = protons + neutrons.</p>
+      <h2>2. Electronic Configuration</h2>
+      <p>JAMB tests this heavily. Electrons fill shells in order: 2, 8, 8, 18...</p>
+      <div class="example-box">
+        <div class="label">Worked Examples</div>
+        <p style="margin:0; color:var(--text);"><strong>Chlorine (atomic number 17):</strong> 2, 8, 7</p>
+        <p style="margin:4px 0 0; color:var(--text);"><strong>Calcium (atomic number 20):</strong> 2, 8, 8, 2</p>
+        <p style="margin:4px 0 0; color:var(--text);"><strong>Iron (atomic number 26):</strong> 2, 8, 14, 2</p>
+      </div>
+      <h2>3. Periodic Trends</h2>
+      <ul>
+        <li><strong>Across a period (left to right):</strong> Atomic radius decreases, electronegativity increases, metallic character decreases</li>
+        <li><strong>Down a group:</strong> Atomic radius increases, electronegativity decreases, metallic character increases</li>
+      </ul>
+      <h2>4. Types of Bonds</h2>
+      <ul>
+        <li><strong>Ionic:</strong> Transfer of electrons (metal + non-metal), e.g., NaCl</li>
+        <li><strong>Covalent:</strong> Sharing of electrons (non-metal + non-metal), e.g., H₂O</li>
+        <li><strong>Metallic:</strong> Sea of delocalized electrons in metals</li>
+        <li><strong>Dative:</strong> One atom donates both electrons, e.g., NH₄⁺</li>
+      </ul>
+    `
+  },
+  'python-begin': {
+    title: 'Introduction to Python',
+    subtitle: 'Python for Beginners · Lesson 1 of 45',
+    content: `
+      <h2>1. What is Python?</h2>
+      <p>Python is a high-level, interpreted programming language known for its readability. It is used in web development, data science, AI, automation, and more. Major companies using Python include Google, Netflix, and Instagram.</p>
+      <h2>2. Your First Program</h2>
+      <p>Every programmer starts with "Hello, World!"</p>
+      <div class="example-box">
+        <div class="label">Code</div>
+        <pre style="margin:0; background:transparent;">print("Hello, World!")</pre>
+        <div class="label" style="margin-top:12px;">Output</div>
+        <p style="margin:0; color:var(--text);">Hello, World!</p>
+      </div>
+      <h2>3. Variables and Data Types</h2>
+      <ul>
+        <li><strong>int:</strong> Whole numbers — age = 17</li>
+        <li><strong>float:</strong> Decimal numbers — height = 1.75</li>
+        <li><strong>str:</strong> Text — name = "Amara"</li>
+        <li><strong>bool:</strong> True/False — passed = True</li>
+        <li><strong>list:</strong> Ordered collection — scores = [85, 90, 78]</li>
+      </ul>
+      <h2>4. Basic Operators</h2>
+      <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;">
+        <tr style="background:var(--warm-gray);"><th style="padding:10px; border:1px solid var(--border);">Operator</th><th style="padding:10px; border:1px solid var(--border);">Meaning</th><th style="padding:10px; border:1px solid var(--border);">Example</th></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">+</td><td style="padding:10px; border:1px solid var(--border);">Addition</td><td style="padding:10px; border:1px solid var(--border);">5 + 3 = 8</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">-</td><td style="padding:10px; border:1px solid var(--border);">Subtraction</td><td style="padding:10px; border:1px solid var(--border);">5 - 3 = 2</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">*</td><td style="padding:10px; border:1px solid var(--border);">Multiplication</td><td style="padding:10px; border:1px solid var(--border);">5 * 3 = 15</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">/</td><td style="padding:10px; border:1px solid var(--border);">Division</td><td style="padding:10px; border:1px solid var(--border);">5 / 2 = 2.5</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">//</td><td style="padding:10px; border:1px solid var(--border);">Floor division</td><td style="padding:10px; border:1px solid var(--border);">5 // 2 = 2</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">%</td><td style="padding:10px; border:1px solid var(--border);">Modulo</td><td style="padding:10px; border:1px solid var(--border);">5 % 2 = 1</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">**</td><td style="padding:10px; border:1px solid var(--border);">Exponent</td><td style="padding:10px; border:1px solid var(--border);">2 ** 3 = 8</td></tr>
+      </table>
+    `
+  },
+  'econ-waec': {
+    title: 'Introduction to Economics',
+    subtitle: 'WAEC Economics · Lesson 1 of 35',
+    content: `
+      <h2>1. Definition of Economics</h2>
+      <p>Economics is the social science that studies how individuals, businesses, governments, and societies make choices about allocating limited resources to satisfy unlimited wants. <strong>Scarcity</strong> is the fundamental economic problem.</p>
+      <h2>2. Branches of Economics</h2>
+      <ul>
+        <li><strong>Microeconomics:</strong> Studies individual units — consumers, firms, markets</li>
+        <li><strong>Macroeconomics:</strong> Studies the economy as a whole — GDP, inflation, unemployment</li>
+      </ul>
+      <h2>3. Basic Economic Concepts</h2>
+      <ul>
+        <li><strong>Wants:</strong> Desires that can be satisfied by consuming goods/services</li>
+        <li><strong>Needs:</strong> Essential requirements for survival (food, shelter, clothing)</li>
+        <li><strong>Scarcity:</strong> Limited resources vs unlimited wants</li>
+        <li><strong>Choice:</strong> Selecting the best alternative given scarcity</li>
+        <li><strong>Opportunity Cost:</strong> The next best alternative foregone</li>
+      </ul>
+      <div class="example-box">
+        <div class="label">Worked Example</div>
+        <p style="margin:0; color:var(--text);"><strong>A student has ₦5000 and must choose between buying a textbook (₦3000) or attending a tutorial (₦4000). What is the opportunity cost of choosing the tutorial?</strong></p>
+        <p style="margin:8px 0 0; color:var(--text-secondary);">The opportunity cost is the textbook — it is the next best alternative that was given up.</p>
+      </div>
+      <h2>4. Factors of Production (WAEC Essential)</h2>
+      <table style="width:100%; border-collapse:collapse; margin:16px 0; font-size:14px;">
+        <tr style="background:var(--warm-gray);"><th style="padding:10px; border:1px solid var(--border); text-align:left;">Factor</th><th style="padding:10px; border:1px solid var(--border); text-align:left;">Reward</th><th style="padding:10px; border:1px solid var(--border); text-align:left;">Example</th></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Land</td><td style="padding:10px; border:1px solid var(--border);">Rent</td><td style="padding:10px; border:1px solid var(--border);">Farmland, oil reserves</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Labour</td><td style="padding:10px; border:1px solid var(--border);">Wages/Salary</td><td style="padding:10px; border:1px solid var(--border);">Teachers, doctors</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Capital</td><td style="padding:10px; border:1px solid var(--border);">Interest</td><td style="padding:10px; border:1px solid var(--border);">Machinery, computers</td></tr>
+        <tr><td style="padding:10px; border:1px solid var(--border);">Entrepreneur</td><td style="padding:10px; border:1px solid var(--border);">Profit</td><td style="padding:10px; border:1px solid var(--border);">Business owner</td></tr>
+      </table>
+    `
+  }
+};
+
+// ==================== STATE ====================
+let currentQuestion = 0;
+let answers = [];
+let assessmentResults = null;
+let currentUser = Storage.get('currentUser') || null;
+let currentLessonId = null;
+let currentLessonIndex = 0;
+
+let userProfile = currentUser ? currentUser.profile : {
+  name: 'Guest User',
+  initials: 'GU',
+  location: 'Nigeria',
+  level: 'Senior Secondary',
+  points: 0,
+  streak: 0,
+  path: 'Not set',
+  isGuest: true
+};
+
+// ==================== AUTHENTICATION (Simulated - Wire to Firebase/Supabase) ====================
+function toggleAuthMode() {
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  if (loginForm.style.display === 'none') {
+    loginForm.style.display = 'block';
+    signupForm.style.display = 'none';
+  } else {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+  }
+}
+
+function handleLogin() {
+  const email = document.getElementById('auth-email').value;
+  const password = document.getElementById('auth-password').value;
+  const btn = document.getElementById('login-btn');
+
+  if (!email || !password) {
+    showToast('Please enter email and password', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+
+  // Simulate API call - replace with: fetch('https://your-api.com/login', ...)
+  setTimeout(() => {
+    const savedUser = Storage.get('user_' + email);
+    if (savedUser && savedUser.password === password) {
+      currentUser = savedUser;
+      Storage.set('currentUser', currentUser);
+      loadUserData();
+      showToast('Welcome back, ' + userProfile.name + '!', 'success');
+      goToScreen('onboarding');
+    } else {
+      // Demo login for any email/password
+      currentUser = {
+        email: email,
+        password: password,
+        profile: {
+          name: email.split('@')[0],
+          initials: email.substring(0,2).toUpperCase(),
+          location: 'Nigeria',
+          level: 'Senior Secondary',
+          points: 1240,
+          streak: 7,
+          path: 'WAEC + Coding',
+          isGuest: false
+        }
+      };
+      Storage.set('currentUser', currentUser);
+      Storage.set('user_' + email, currentUser);
+      loadUserData();
+      showToast('Welcome, ' + userProfile.name + '!', 'success');
+      goToScreen('onboarding');
+    }
+    btn.disabled = false;
+    btn.innerHTML = 'Sign In';
+  }, 1200);
+}
+
+function handleSignup() {
+  const name = document.getElementById('signup-name').value;
+  const email = document.getElementById('signup-email').value;
+  const password = document.getElementById('signup-password').value;
+  const level = document.getElementById('signup-level').value;
+  const location = document.getElementById('signup-location').value;
+  const btn = document.getElementById('signup-btn');
+
+  if (!name || !email || !password) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+  if (password.length < 6) {
+    showToast('Password must be at least 6 characters', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+
+  setTimeout(() => {
+    currentUser = {
+      email: email,
+      password: password,
+      profile: {
+        name: name,
+        initials: name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase(),
+        location: location || 'Nigeria',
+        level: level || 'Senior Secondary',
+        points: 0,
+        streak: 0,
+        path: 'Not set',
+        isGuest: false
+      }
+    };
+    Storage.set('currentUser', currentUser);
+    Storage.set('user_' + email, currentUser);
+    loadUserData();
+    showToast('Account created! Welcome, ' + name + '!', 'success');
+    goToScreen('onboarding');
+    btn.disabled = false;
+    btn.innerHTML = 'Create Account';
+  }, 1200);
+}
+
+function continueAsGuest() {
+  currentUser = null;
+  userProfile = {
+    name: 'Guest User',
+    initials: 'GU',
+    location: 'Nigeria',
+    level: 'Senior Secondary',
+    points: 0,
+    streak: 0,
+    path: 'Not set',
+    isGuest: true
+  };
+  Storage.remove('currentUser');
+  loadUserData();
+  showToast('Continuing as guest. Sign up later to save progress!');
+  goToScreen('onboarding');
+}
+
+function handleLogout() {
+  currentUser = null;
+  Storage.remove('currentUser');
+  userProfile = {
+    name: 'Guest User',
+    initials: 'GU',
+    location: 'Nigeria',
+    level: 'Senior Secondary',
+    points: 0,
+    streak: 0,
+    path: 'Not set',
+    isGuest: true
+  };
+  loadUserData();
+  showToast('Logged out successfully');
+  goToScreen('auth');
+}
+
+function loadUserData() {
+  if (currentUser) {
+    userProfile = currentUser.profile;
+  }
+  // Load saved progress
+  const savedProgress = Storage.get('courseProgress');
+  if (savedProgress) {
+    Object.keys(savedProgress).forEach(id => {
+      const course = courses.find(c => c.id === id);
+      if (course) {
+        course.progress = savedProgress[id].progress;
+        course.completed = savedProgress[id].completed;
+      }
+    });
+  }
+
+  // Update UI
+  document.getElementById('home-avatar').textContent = userProfile.initials;
+  document.getElementById('home-name').textContent = userProfile.name.split(' ')[0] + (userProfile.name.split(' ').length > 1 ? ' ' + userProfile.name.split(' ')[1][0] + '.' : '');
+  document.getElementById('streak-badge').textContent = userProfile.streak;
+  document.getElementById('profile-avatar').textContent = userProfile.initials;
+  document.getElementById('profile-name').textContent = userProfile.name;
+  document.getElementById('profile-meta').textContent = userProfile.level + ' · ' + userProfile.location;
+  document.getElementById('profile-points').textContent = userProfile.points.toLocaleString();
+  document.getElementById('profile-path').textContent = userProfile.path;
+  document.getElementById('account-status').textContent = userProfile.isGuest ? 'Guest' : 'Signed in';
+  document.getElementById('logout-btn').style.display = userProfile.isGuest ? 'none' : 'block';
+  document.getElementById('home-streak').textContent = userProfile.streak;
+}
+
+// ==================== NAVIGATION ====================
+function goToScreen(screenName) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + screenName);
+  if (screen) {
+    screen.classList.add('active');
+    const content = screen.querySelector('.content');
+    if (content) content.scrollTop = 0;
+  }
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (['home','paths','explore','profile','notifications'].includes(screenName)) {
+    const navItem = document.querySelector('.nav-item[data-nav="' + screenName + '"]');
+    if (navItem) navItem.classList.add('active');
+  }
+}
+
+function showToast(message, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast' + (type ? ' ' + type : '');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ==================== DIAGNOSTIC ====================
+function startDiagnostic() {
+  currentQuestion = 0;
+  answers = [];
+  renderQuestion();
+  goToScreen('diagnostic');
+}
+
+function skipToHome() {
+  renderHomeCourses();
+  renderPaths();
+  renderOpportunities();
+  goToScreen('home');
+}
+
+function retakeDiagnostic() {
+  startDiagnostic();
+}
+
+function renderQuestion() {
+  const q = diagnosticQuestions[currentQuestion];
+  const container = document.getElementById('diagnostic-questions');
+  const pct = Math.round(((currentQuestion) / diagnosticQuestions.length) * 100);
+
+  document.getElementById('diag-progress-text').textContent = 'Question ' + (currentQuestion + 1) + ' of ' + diagnosticQuestions.length;
+  document.getElementById('diag-percent').textContent = pct + '%';
+  document.getElementById('diag-progress-bar').style.width = pct + '%';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  let html = '<div class="question-card">';
+  html += '<div class="question-number">' + q.subject + ' <span class="difficulty-badge difficulty-' + q.difficulty + '">' + q.difficulty + '</span></div>';
+  html += '<div class="question-text">' + q.question + '</div>';
+
+  q.options.forEach((opt, idx) => {
+    html += '<div class="option" onclick="selectOption(' + idx + ')">';
+    html += '<div class="option-letter">' + letters[idx] + '</div>';
+    html += '<div class="option-text">' + opt + '</div>';
+    html += '</div>';
+  });
+
+  html += '<div id="explanation" style="display:none;"></div>';
+  html += '<button class="btn btn-primary" id="nextBtn" style="margin-top:16px; display:none;" onclick="nextQuestion()">Next question →</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function selectOption(idx) {
+  const q = diagnosticQuestions[currentQuestion];
+  const options = document.querySelectorAll('.option');
+  const explanationDiv = document.getElementById('explanation');
+  const nextBtn = document.getElementById('nextBtn');
+
+  options.forEach((opt, i) => {
+    opt.style.pointerEvents = 'none';
+    if (i === q.correct) {
+      opt.classList.add('answered-correct');
+    } else if (i === idx && i !== q.correct) {
+      opt.classList.add('answered-wrong');
+    }
+  });
+
+  explanationDiv.innerHTML = '<div class="explanation-box">' + q.explanation + '</div>';
+  explanationDiv.style.display = 'block';
+  nextBtn.style.display = 'block';
+
+  answers.push({
+    subject: q.subject,
+    difficulty: q.difficulty,
+    correct: idx === q.correct
+  });
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < diagnosticQuestions.length) {
+    renderQuestion();
+  } else {
+    calculateResults();
+    goToScreen('results');
+  }
+}
+
+// ==================== RESULTS ====================
+function calculateResults() {
+  const subjects = {};
+  let totalCorrect = 0;
+
+  answers.forEach(a => {
+    if (!subjects[a.subject]) {
+      subjects[a.subject] = { correct: 0, total: 0, basic: 0, basicTotal: 0, intermediate: 0, interTotal: 0, advanced: 0, advTotal: 0 };
+    }
+    subjects[a.subject].total++;
+    if (a.difficulty === 'basic') { subjects[a.subject].basicTotal++; if (a.correct) subjects[a.subject].basic++; }
+    if (a.difficulty === 'intermediate') { subjects[a.subject].interTotal++; if (a.correct) subjects[a.subject].intermediate++; }
+    if (a.difficulty === 'advanced') { subjects[a.subject].advTotal++; if (a.correct) subjects[a.subject].advanced++; }
+    if (a.correct) subjects[a.subject].correct++;
+    if (a.correct) totalCorrect++;
+  });
+
+  const subjectScores = {};
+  Object.keys(subjects).forEach(sub => {
+    subjectScores[sub] = Math.round((subjects[sub].correct / subjects[sub].total) * 100);
+  });
+
+  const sorted = Object.entries(subjectScores).sort((a, b) => b[1] - a[1]);
+  const strengths = sorted.filter(([_, score]) => score >= 60);
+  const weaknesses = sorted.filter(([_, score]) => score < 60);
+
+  assessmentResults = { totalScore: Math.round((totalCorrect / answers.length) * 100), subjectScores, strengths, weaknesses, subjects };
+
+  renderRadarChart();
+  renderStrengthWeakness();
+
+  // Save results
+  Storage.set('lastAssessment', assessmentResults);
+  queueSync('assessment', assessmentResults);
+}
+
+function renderRadarChart() {
+  const svg = document.getElementById('radarSvg');
+  const scores = assessmentResults.subjectScores;
+  const subjects = Object.keys(scores);
+  const centerX = 140, centerY = 140, radius = 100;
+  const angleStep = (2 * Math.PI) / subjects.length;
+
+  let gridHTML = '';
+  for (let level = 1; level <= 5; level++) {
+    const r = (radius / 5) * level;
+    let points = '';
+    for (let i = 0; i < subjects.length; i++) {
+      const angle = i * angleStep - Math.PI / 2;
+      points += (centerX + r * Math.cos(angle)) + ',' + (centerY + r * Math.sin(angle)) + ' ';
+    }
+    gridHTML += '<polygon points="' + points + '" fill="none" stroke="#E8E0D4" stroke-width="1"/>';
+  }
+
+  let dataPoints = '', pointHTML = '', labelHTML = '';
+  subjects.forEach((sub, i) => {
+    const score = scores[sub];
+    const r = (score / 100) * radius;
+    const angle = i * angleStep - Math.PI / 2;
+    const x = centerX + r * Math.cos(angle);
+    const y = centerY + r * Math.sin(angle);
+    dataPoints += x + ',' + y + ' ';
+    pointHTML += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#E85D2B" stroke="white" stroke-width="2"/>';
+    const labelR = radius + 22;
+    const lx = centerX + labelR * Math.cos(angle);
+    const ly = centerY + labelR * Math.sin(angle);
+    labelHTML += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="600" fill="#666">' + sub + '</text>';
+    labelHTML += '<text x="' + lx + '" y="' + (ly + 14) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#999">' + score + '%</text>';
+  });
+
+  document.getElementById('radar-grid').innerHTML = gridHTML;
+  document.getElementById('radar-polygon').setAttribute('points', dataPoints);
+  document.getElementById('radar-points').innerHTML = pointHTML;
+  document.getElementById('radar-labels').innerHTML = labelHTML;
+}
+
+function renderStrengthWeakness() {
+  const container = document.getElementById('strengthWeakness');
+  let html = '';
+
+  if (assessmentResults.strengths.length > 0) {
+    html += '<div class="sw-card">';
+    html += '<div class="sw-header"><div class="sw-icon strength">💪</div><div class="sw-title">Your Strengths</div></div>';
+    html += '<div class="sw-desc">';
+    assessmentResults.strengths.forEach(([sub, score]) => {
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);"><span>' + sub + '</span><span class="sw-score good">' + score + '%</span></div>';
+    });
+    html += '</div></div>';
+  }
+
+  if (assessmentResults.weaknesses.length > 0) {
+    html += '<div class="sw-card">';
+    html += '<div class="sw-header"><div class="sw-icon weakness">📈</div><div class="sw-title">Focus Areas</div></div>';
+    html += '<div class="sw-desc">';
+    assessmentResults.weaknesses.forEach(([sub, score]) => {
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border);"><span>' + sub + '</span><span class="sw-score bad">' + score + '%</span></div>';
+    });
+    html += '</div></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+// ==================== LEARNING PATH ====================
+function generateLearningPath() {
+  const timeline = document.getElementById('path-timeline');
+  const weaknesses = assessmentResults.weaknesses.map(([sub]) => sub);
+  const strengths = assessmentResults.strengths.map(([sub]) => sub);
+
+  let pathSteps = [];
+
+  // Phase 1: Foundation (weak areas, basic concepts)
+  weaknesses.forEach(sub => {
+    pathSteps.push({
+      phase: 'Foundation',
+      title: sub + ' Fundamentals',
+      desc: 'Master the basics of ' + sub + ' with WAEC/JAMB aligned lessons and practice.',
+      duration: '2 weeks',
+      lessons: '10 lessons',
+      status: 'upcoming'
+    });
+  });
+
+  // Phase 2: Core Skills (all subjects at intermediate)
+  const allSubjects = [...new Set([...weaknesses, ...strengths])];
+  allSubjects.forEach(sub => {
+    pathSteps.push({
+      phase: 'Core Skills',
+      title: sub + ' Mastery',
+      desc: 'Deep dive into intermediate concepts with past WAEC/JAMB questions.',
+      duration: '3 weeks',
+      lessons: '15 lessons',
+      status: 'upcoming'
+    });
+  });
+
+  // Phase 3: Exam prep
+  pathSteps.push({
+    phase: 'Exam Prep',
+    title: 'WAEC & JAMB Practice',
+    desc: 'Timed mock exams, error analysis, and exam strategy.',
+    duration: '2 weeks',
+    lessons: '8 practice tests',
+    status: 'upcoming'
+  });
+
+  // Phase 4: Career skills
+  pathSteps.push({
+    phase: 'Career Ready',
+    title: 'Coding for Careers',
+    desc: 'Python and web development skills to compete globally.',
+    duration: '4 weeks',
+    lessons: '20 lessons',
+    status: 'upcoming'
+  });
+
+  if (pathSteps.length > 0) pathSteps[0].status = 'current';
+
+  let html = '';
+  pathSteps.forEach((step, i) => {
+    const dotClass = step.status === 'completed' ? 'completed' : step.status === 'current' ? 'current' : 'upcoming';
+    const check = step.status === 'completed' ? '✓' : (i + 1);
+    html += '<div class="path-step">';
+    html += '<div class="path-step-dot ' + dotClass + '">' + check + '</div>';
+    html += '<div class="path-step-content">';
+    html += '<div style="font-size:12px; color:var(--primary); font-weight:600; margin-bottom:4px;">' + step.phase + '</div>';
+    html += '<div class="path-step-title">' + step.title + '</div>';
+    html += '<div class="path-step-desc">' + step.desc + '</div>';
+    html += '<div class="path-step-meta"><span>⏱ ' + step.duration + '</span><span>📖 ' + step.lessons + '</span></div>';
+    html += '</div></div>';
+  });
+
+  timeline.innerHTML = html;
+
+  const weakList = weaknesses.length > 0 ? weaknesses.join(', ') : 'All subjects';
+  userProfile.path = weakList + ' Focus + Career Skills';
+  document.getElementById('profile-path').textContent = userProfile.path;
+
+  goToScreen('learning-path');
+}
+
+// ==================== HOME ====================
+function renderHomeCourses() {
+  const container = document.getElementById('home-courses');
+  const inProgress = courses.filter(c => c.progress > 0);
+
+  let html = '';
+  inProgress.forEach(c => {
+    const tagClass = c.color === 'green' ? 'tag-green' : c.color === 'teal' ? 'tag-teal' : c.color === 'gold' ? 'tag-gold' : 'tag-primary';
+    const fillClass = c.color === 'green' ? 'green' : '';
+    html += '<div class="card course-card" onclick="openCourse('' + c.id + '')">';
+    html += '<div class="course-top"><span class="tag ' + tagClass + '">' + c.subject + '</span><span class="course-time">⏱ ' + (c.hours - Math.round(c.hours * c.progress / 100)) + 'h left</span></div>';
+    html += '<div class="course-name">' + c.name + '</div>';
+    html += '<div class="course-meta"><span>' + c.progress + '% complete</span><span>' + c.completed + '/' + c.lessons + ' lessons</span></div>';
+    html += '<div class="progress-track"><div class="progress-fill ' + fillClass + '" style="width:' + c.progress + '%;"></div></div>';
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+// ==================== LESSONS ====================
+function openCourse(courseId) {
+  currentLessonId = courseId;
+  currentLessonIndex = 0;
+  const content = curriculumContent[courseId];
+  if (content) {
+    renderLesson(content);
+    goToScreen('lesson');
+  } else {
+    showToast('Course content loading... (add more curriculum data)');
+  }
+}
+
+function renderLesson(content) {
+  document.getElementById('lesson-title').textContent = content.title;
+  document.getElementById('lesson-subtitle').textContent = content.subtitle;
+  document.getElementById('lesson-content').innerHTML = content.content;
+}
+
+function nextLesson() {
+  showToast('Next lesson coming soon!');
+}
+
+function prevLesson() {
+  showToast('Previous lesson');
+}
+
+// ==================== PATHS ====================
+function renderPaths() {
+  const container = document.getElementById('paths-list');
+  let html = '';
+  courses.forEach(c => {
+    const tagClass = c.color === 'green' ? 'tag-green' : c.color === 'teal' ? 'tag-teal' : c.color === 'gold' ? 'tag-gold' : c.color === 'purple' ? 'tag-purple' : 'tag-primary';
+    const fillClass = c.color === 'green' ? 'green' : '';
+    const progressText = c.progress > 0 ? c.progress + '%' : 'Not started';
+    html += '<div class="card course-card path-item" data-category="' + c.category + '" onclick="openCourse('' + c.id + '')">';
+    html += '<div class="course-top"><span class="tag ' + tagClass + '">' + c.subject + '</span><span class="course-time">⏱ ' + c.hours + 'h</span></div>';
+    html += '<div class="course-name">' + c.name + '</div>';
+    html += '<div class="course-meta"><span>📖 ' + c.lessons + ' lessons</span><span>' + c.level + '</span><span style="color:' + (c.progress > 0 ? 'var(--primary)' : 'var(--text-tertiary)') + '; font-weight:600;">' + progressText + '</span></div>';
+    html += '<div class="progress-track"><div class="progress-fill ' + fillClass + '" style="width:' + c.progress + '%;"></div></div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function filterPaths() {
+  const query = document.getElementById('pathSearch').value.toLowerCase();
+  document.querySelectorAll('.path-item').forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+  });
+}
+
+function setFilter(el, category) {
+  document.querySelectorAll('#screen-paths .filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.path-item').forEach(item => {
+    item.style.display = (category === 'all' || item.dataset.category.includes(category)) ? 'block' : 'none';
+  });
+}
+
+// ==================== TUTOR ====================
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, 'user');
+  input.value = '';
+  document.getElementById('suggestionChips').style.display = 'none';
+  document.getElementById('typingIndicator').classList.add('active');
+
+  const lower = text.toLowerCase();
+  let response = null;
+
+  for (const key in tutorResponses) {
+    const keyWords = key.split(' ');
+    const matches = keyWords.filter(w => lower.includes(w)).length;
+    if (matches >= 2) { response = tutorResponses[key]; break; }
+  }
+
+  if (!response) {
+    if (lower.includes('math') || lower.includes('equation') || lower.includes('solve')) {
+      response = 'I can help with math! Try asking me to solve a specific equation, explain a concept like quadratic equations, or walk through a WAEC past question. What topic in math are you studying?';
+    } else if (lower.includes('physics') || lower.includes('force') || lower.includes('motion')) {
+      response = 'Physics is all about understanding how the world works! I can explain Newton's laws, solve motion problems, or help with JAMB physics prep. What would you like to explore?';
+    } else if (lower.includes('english') || lower.includes('grammar') || lower.includes('essay')) {
+      response = 'I can help with English language skills — grammar, comprehension, essay writing, or literary devices. What area would you like to improve?';
+    } else if (lower.includes('career') || lower.includes('job') || lower.includes('scholarship')) {
+      response = 'I can guide you on career paths, help you find scholarships, or suggest skills to learn for the global job market. What is your career goal?';
+    } else {
+      response = 'That is a great question! 🌍 I am here to help you learn. Could you give me a bit more context so I can give you the best answer? You can ask about WAEC, JAMB, coding, career advice, or any subject you are studying.';
+    }
+  }
+
+  setTimeout(() => {
+    document.getElementById('typingIndicator').classList.remove('active');
+    addMessage(response, 'bot');
+  }, 1200);
+}
+
+function sendSuggestion(el) {
+  document.getElementById('chatInput').value = el.textContent;
+  sendMessage();
+}
+
+function addMessage(text, sender) {
+  const area = document.getElementById('chatArea');
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble ' + sender;
+  bubble.style.animation = 'fadeIn 0.3s ease';
+  let formatted = text.replace(/\\n\\n/g, '</p><p>').replace(/\\n/g, '<br>').replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>').replace(/\\*(.*?)\\*/g, '<em>$1</em>');
+  bubble.innerHTML = '<p style="margin:0;">' + formatted + '</p>';
+  area.appendChild(bubble);
+  area.scrollTop = area.scrollHeight;
+}
+
+// ==================== EXPLORE ====================
+function renderOpportunities() {
+  const container = document.getElementById('opp-list');
+  let html = '';
+  opportunities.forEach(opp => {
+    const colors = ['#E85D2B', '#1B6B4F', '#2A9D8F', '#264653', '#E9C46A', '#F4A261', '#8A2BE2', '#dc3545'];
+    const color = colors[opp.id % colors.length];
+    const rgb = hexToRgb(color);
+    html += '<div class="card opp-item" data-type="' + opp.type + '">';
+    html += '<div class="opp-item">';
+    html += '<div class="opp-logo" style="background:rgba(' + rgb + ',0.1); color:' + color + ';">' + opp.org.substring(0,2).toUpperCase() + '</div>';
+    html += '<div class="opp-details"><div class="opp-name">' + opp.name + '</div><div class="opp-type">' + capitalize(opp.type) + ' · ' + opp.location + ' · Deadline: ' + opp.deadline + '</div></div>';
+    html += '<button class="opp-bookmark ' + (opp.saved ? 'saved' : '') + '" onclick="toggleBookmark(this, ' + opp.id + ')">🔖</button>';
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function toggleBookmark(el, id) {
+  el.classList.toggle('saved');
+  const opp = opportunities.find(o => o.id === id);
+  if (opp) {
+    opp.saved = !opp.saved;
+    showToast(opp.saved ? 'Saved to bookmarks!' : 'Removed from bookmarks');
+    queueSync('bookmark', { oppId: id, saved: opp.saved });
+  }
+}
+
+function setOppFilter(el, type) {
+  document.querySelectorAll('#screen-explore .filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.opp-item').forEach(item => {
+    item.style.display = (type === 'all' || item.dataset.type === type) ? 'block' : 'none';
+  });
+}
+
+// ==================== NOTIFICATIONS API ====================
+function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    showToast('Notifications not supported on this device', 'error');
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') {
+      const time = document.getElementById('reminder-time').value;
+      Storage.set('reminderTime', time);
+      Storage.set('notificationsEnabled', true);
+      document.getElementById('notif-status').textContent = 'On';
+      showToast('Daily reminders enabled for ' + time + '!', 'success');
+      scheduleDailyReminder(time);
+    } else {
+      showToast('Please allow notifications in your browser settings', 'error');
+    }
+  });
+}
+
+function scheduleDailyReminder(timeStr) {
+  // Parse time (HH:MM)
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const now = new Date();
+  let reminderTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+
+  if (reminderTime <= now) {
+    reminderTime.setDate(reminderTime.getDate() + 1);
+  }
+
+  const delay = reminderTime - now;
+
+  setTimeout(() => {
+    if (Notification.permission === 'granted') {
+      new Notification('GlobalBridge AI — Study Time! 📚', {
+        body: 'Your daily learning streak is waiting. Complete a lesson to keep it going!',
+        icon: '🎓',
+        badge: '🎓',
+        tag: 'daily-reminder',
+        requireInteraction: false
+      });
+    }
+    // Schedule next day's reminder
+    scheduleDailyReminder(timeStr);
+  }, delay);
+
+  console.log('Reminder scheduled for:', reminderTime.toLocaleString());
+}
+
+// Check for saved reminder on load
+function checkSavedReminder() {
+  const enabled = Storage.get('notificationsEnabled');
+  const time = Storage.get('reminderTime');
+  if (enabled && time && Notification.permission === 'granted') {
+    scheduleDailyReminder(time);
+    document.getElementById('notif-status').textContent = 'On';
+  }
+}
+
+// ==================== UTILS ====================
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return r + ',' + g + ',' + b;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ==================== INIT ====================
+window.onload = function() {
+  updateOnlineStatus();
+  checkSavedReminder();
+
+  // If user is logged in, skip auth screen
+  if (currentUser) {
+    loadUserData();
+    renderHomeCourses();
+    renderPaths();
+    renderOpportunities();
+    goToScreen('home');
+  } else {
+    // Check if guest has taken assessment before
+    const lastAssessment = Storage.get('lastAssessment');
+    if (lastAssessment) {
+      assessmentResults = lastAssessment;
+      renderHomeCourses();
+      renderPaths();
+      renderOpportunities();
+    }
+  }
+};
+</script>
+</body>
+</html>
